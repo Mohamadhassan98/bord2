@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import {ThemeProvider} from "@material-ui/styles";
 import theme from "./values/theme";
 import RTL from "./utils/RTL";
+import "@brainhubeu/react-carousel/lib/style.css";
 
 const Index = () => {
     return (
@@ -21,7 +22,7 @@ ReactDOM.render(
     <React.StrictMode>
         <Index />
     </React.StrictMode>,
-    document.getElementById("root"),
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

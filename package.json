@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@brainhubeu/react-carousel": "^1.19.26",
         "@material-ui/core": "^4.11.0",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.56",
@@ -11,11 +12,13 @@
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.3.2",
         "@testing-library/user-event": "^7.1.2",
+        "@types/brainhubeu__react-carousel": "^1.15.0",
         "@types/jest": "^24.0.0",
         "@types/node": "^12.0.0",
         "@types/react": "^16.9.0",
         "@types/react-dom": "^16.9.0",
         "@types/react-router-dom": "^5.1.5",
+        "axios": "^0.20.0",
         "jss": "^10.4.0",
         "jss-rtl": "^0.3.0",
         "lessc": "^1.0.2",
@@ -130,5 +133,6 @@
         "trailingComma": "es5",
         "tabWidth": 4,
         "proseWrap": "never"
-    }
+    },
+    "proxy": "http://192.168.1.3:8000/"
 }
