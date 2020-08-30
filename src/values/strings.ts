@@ -1,6 +1,14 @@
+import moment from "moment-jalaali";
+
+moment.loadPersian({dialect: "persian-modern"});
+moment.locale("fa");
+export const getFullDate = (gregorian: Date) => moment(gregorian).format("YYYY/MM/DD");
 export const appName = "بردو";
 
 export const pages = {
+    home: {
+        playIt: "بازی کن!",
+    },
     login: {
         signIn: "ورود",
         emailAddress: "آدرس ایمیل",
@@ -46,5 +54,49 @@ export const pages = {
         ok: "باشه",
         passwordError: "رمز عبور باید حداقل 8 رقم شامل یک حرف و یک عدد باشد.",
         passwordConfirmError: "تکرار رمز عبور صحیح نیست.",
+    },
+    profilePage: {
+        editInfo: "ویرایش اطلاعات",
+        latestPlayedGame: "بازی های اخیر",
+    },
+    editProfile: {
+        editProfile: "ویرایش پروفایل",
+        emailAddress: "آدرس ایمیل",
+        oldPassword: "رمز عبور قبلی",
+        newPassword: "رمز عبور جدید",
+        newPasswordConfirm: "تکرار رمز عبور",
+        changePassword: "تغییر رمز عبور",
+        passwordChanged: "رمز عبور با موفقیت تغییر کرد.",
+        ok: "باشه",
+        passwordError: "رمز عبور باید حداقل 8 رقم شامل یک حرف و یک عدد باشد.",
+        passwordConfirmError: "تکرار رمز عبور صحیح نیست.",
+        emailError: "قالب ایمیل صحیح نیست.",
+        avatar: "آواتار",
+        profileEdited: "اطلاعات با موفقیت ثبت شد.",
+    },
+    gamePage: {
+        downloadRulebook: "مطالعه قوانین",
+        minimumPlayers: "حداقل بازیکن",
+        maximumPlayers: "حداکثر بازیکن",
+    },
+};
+
+export const components = {
+    gameHistoryCard: {
+        winner: "برنده",
+        loser: "بازنده",
+    },
+    header: {
+        mainPage: "صفحه اصلی",
+        contactUs: "ارتباط با ما",
+        aboutUs: "درباره ما",
+        signInUp: "ورود / ثبت نام",
+        signUp: "ثبت نام",
+        login: "ورود",
+        exit: "خروج",
+        profile: "حساب کاربری",
+    },
+    searchBar: {
+        placeHolder: "بازی مورد نظر خود را جستجو کنید.",
     },
 };

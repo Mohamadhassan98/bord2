@@ -7,14 +7,17 @@ import {ThemeProvider} from "@material-ui/styles";
 import theme from "./values/theme";
 import RTL from "./utils/RTL";
 import "@brainhubeu/react-carousel/lib/style.css";
+import {AuthProvider} from "./contexts/AuthContext";
 
 const Index = () => {
     return (
-        <ThemeProvider theme={theme}>
-            <RTL>
-                <App />
-            </RTL>
-        </ThemeProvider>
+        <AuthProvider>
+            <ThemeProvider theme={theme}>
+                <RTL>
+                    <App />
+                </RTL>
+            </ThemeProvider>
+        </AuthProvider>
     );
 };
 

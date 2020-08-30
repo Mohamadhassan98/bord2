@@ -1,0 +1,13 @@
+.menuItem:first-child {
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+}
+
+.menuItem:last-child {
+    border-bottom-left-radius: 13px;
+    border-bottom-right-radius: 13px;
+}
+
+.shadow-20px-text-disabled-43 {
+    box-shadow: 0 3px 20px rgba(141, 141, 141, 0.43) !important;
+}

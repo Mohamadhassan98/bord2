@@ -3,7 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -13,9 +12,12 @@ import {pages} from "../values/strings";
 import CustomSlider from "../components/Slider";
 import axios from "axios";
 import {getPath} from "../values/connection";
-import {RouteComponentProps} from "react-router";
-
-type avatar = {name: string; avatar: string; id: number};
+import {useHistory} from "react-router";
+import {routes, routing} from "../values/routes";
+import useAuth from "../contexts/AuthContext";
+import {avatar, User} from "../types/types";
+import {Link} from "react-router-dom";
+import theme from "../values/theme";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp({history: {push}}: RouteComponentProps) {
+export default function SignUp() {
+    const {push} = useHistory();
     const classes = useStyles();
     const {signUp} = pages;
     const [username, setUsername] = React.useState("");
@@ -56,6 +59,7 @@ export default function SignUp({history: {push}}: RouteComponentProps) {
     const [passwordConfirmError, setPasswordConfirmError] = React.useState(" ");
     const [avatars, setAvatars] = React.useState<avatar[]>([]);
     const [selectedAvatar, setSelectedAvatar] = React.useState<number>();
+    const {login} = useAuth();
     const validateFields = () => {
         let isValid = true;
         if (!/^[A-Za-z]+[A-Za-z0-9._]*@[A-Za-z]+[A-Za-z0-9_]*.[A-Za-z]+[A-Za-z0-9.]$/.test(email)) {
@@ -87,19 +91,15 @@ export default function SignUp({history: {push}}: RouteComponentProps) {
                 avatar: selectedAvatar,
                 email,
             })
-            .then(
-                ({
-                    data: {
-                        token,
-                        user: {username, avatar},
-                    },
-                }) => {
-                    localStorage.setItem("token", token);
-                    localStorage.setItem("username", username);
-                    localStorage.setItem("avatar", avatar || "null");
-                    push("/");
-                }
-            )
+            .then(({data: {key}}) => {
+                axios
+                    .get<User>(getPath("currentUser"), {headers: {Authorization: `Token ${key}`}})
+                    .then(({data}) => {
+                        login({user: data, token: key});
+                        push(routes.home);
+                    })
+                    .catch((error) => console.error(error));
+            })
             .catch((error) => console.error(error));
     };
 
@@ -237,7 +237,7 @@ export default function SignUp({history: {push}}: RouteComponentProps) {
                     </Button>
                     <Grid container justify='flex-end'>
                         <Grid item>
-                            <Link href='#' variant='body2'>
+                            <Link to={routing.login.path} style={{color: theme.palette.primary.main}}>
                                 {signUp.loginInstead}
                             </Link>
                         </Grid>

@@ -1,5 +1,5 @@
 import React from "react";
-import {RouteComponentProps} from "react-router";
+import {useHistory, useRouteMatch} from "react-router";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -32,12 +32,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ({
-    match: {
-        params: {uid, token},
-    },
-    history: {push},
-}: RouteComponentProps<{uid: string; token: string}>) {
+export default function () {
+    const {
+        params: {token, uid},
+    } = useRouteMatch<{uid: string; token: string}>();
+    const {push} = useHistory();
     const classes = useStyles();
     const {recoverPassword} = pages;
     const [newPassword, setNewPassword] = React.useState("");

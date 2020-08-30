@@ -66,13 +66,13 @@ const theme = createMuiTheme({
             dark: "#E7301C",
         },
         secondary: {
-            light: "#FEE961",
-            main: "#FFDD00",
-            dark: "#FFCD00",
+            light: "#f2edff",
+            main: "#DBCCFF",
         },
         success: {
-            light: "#24C82F",
-            main: "#03B40F",
+            light: "#d0ec8b",
+            main: "#ace233",
+            dark: "#8bc605",
         },
         text: {
             primary: "#000000",
@@ -82,7 +82,7 @@ const theme = createMuiTheme({
     },
     direction: "rtl",
     typography: {
-        fontFamily: "IRANSans",
+        fontFamily: "iranyekan",
         fontWeightMedium: 500,
         fontWeightRegular: "normal",
         fontWeightBold: "bold",

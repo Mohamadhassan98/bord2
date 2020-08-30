@@ -5,7 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -15,8 +14,13 @@ import {pages} from "../values/strings";
 import CheckBoxIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import axios, {AxiosResponse} from "axios";
 import {getPath} from "../values/connection";
-import {RouteComponentProps} from "react-router";
+import {useHistory, useLocation} from "react-router";
 import {Dialog, DialogActions, DialogContent, DialogContentText} from "@material-ui/core";
+import {routing} from "../values/routes";
+import useAuth from "../contexts/AuthContext";
+import {User} from "../types/types";
+import {Link} from "react-router-dom";
+import theme from "../values/theme";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -44,7 +48,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn({history: {push}}: RouteComponentProps) {
+export default function SignIn() {
+    const {push, replace} = useHistory();
+    const {state: {from} = {}} = useLocation<{from?: string}>();
     const classes = useStyles();
     const {login} = pages;
     const [username, setUsername] = React.useState("");
@@ -52,29 +58,25 @@ export default function SignIn({history: {push}}: RouteComponentProps) {
     const [rememberMe, setRememberMe] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const isValid = username.trim() !== "" && password.trim() !== "";
+    const {login: doLogin} = useAuth();
     const onLoginPressed = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
+
         axios
-            .post<
-                any,
-                AxiosResponse<{
-                    token: string;
-                    user: {username: string; avatar: string | null; email: string; id: number};
-                }>
-            >(getPath("login"), {username, password})
-            .then(
-                ({
-                    data: {
-                        token,
-                        user: {username, avatar},
-                    },
-                }) => {
-                    localStorage.setItem("token", token);
-                    localStorage.setItem("username", username);
-                    localStorage.setItem("avatar", avatar || "null");
-                    push("/");
-                }
-            )
+            .post<any, AxiosResponse<{key: string}>>(getPath("login"), {username, password})
+            .then(({data: {key}}) => {
+                axios
+                    .get<User>(getPath("currentUser"), {headers: {Authorization: `Token ${key}`}})
+                    .then(({data}) => {
+                        doLogin({user: data, token: key});
+                        if (from) {
+                            replace(from);
+                        } else {
+                            push(routing.home.path);
+                        }
+                    })
+                    .catch((error) => console.error(error));
+            })
             .catch((error) => console.error(error));
     };
     return (
@@ -157,12 +159,12 @@ export default function SignIn({history: {push}}: RouteComponentProps) {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='#' variant='body2'>
+                            <Link to={routing.forgotPassword.path} style={{color: theme.palette.primary.main}}>
                                 {login.forgotPassword}
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href='#' variant='body2'>
+                            <Link to={routing.signUp.path} style={{color: theme.palette.primary.main}}>
                                 {login.signUpInstead}
                             </Link>
                         </Grid>

@@ -36,36 +36,41 @@ function LeftButton({className, ...rest}: IconButtonProps) {
 interface SliderProps {
     children: React.ReactElement[];
     visibleSlides: number;
+    onChange?: (index: number) => void;
+    value?: number;
 }
 
-export default function CustomSlider({children, visibleSlides}: SliderProps) {
+export default function CustomSlider({children, visibleSlides, onChange, value}: SliderProps) {
     const [index, setIndex] = React.useState(0);
-
+    const controlled = value || index;
+    React.useEffect(() => {
+        onChange?.(controlled);
+    }, [controlled, onChange]);
     return (
         <Carousel
             infinite={false}
             slidesPerPage={visibleSlides}
-            value={index}
+            value={controlled}
             onChange={(value) => setIndex(value)}
             rtl
             arrowLeft={
                 <RightButton
                     onClick={() => {
-                        if (index > 0) {
+                        if (controlled > 0) {
                             setIndex((prevState) => prevState - 1);
                         }
                     }}
-                    disabled={index === 0 || children.length <= visibleSlides}
+                    disabled={controlled === 0 || children.length <= visibleSlides}
                 />
             }
             arrowRight={
                 <LeftButton
                     onClick={() => {
-                        if (index < children.length - visibleSlides) {
+                        if (controlled < children.length - visibleSlides) {
                             setIndex((prevState) => prevState + 1);
                         }
                     }}
-                    disabled={index === children.length - visibleSlides || children.length <= visibleSlides}
+                    disabled={controlled === children.length - visibleSlides || children.length <= visibleSlides}
                 />
             }
             dots={false}
