@@ -8,6 +8,8 @@ import ProfilePage from "../pages/ProfilePage";
 import EditProfile from "../pages/EditProfile";
 import RecoverPassword from "../pages/RecoverPassword";
 import GamePage from "../pages/GamePage";
+import Error500 from "../pages/500";
+import GamePlay from "../pages/GamePlay";
 
 export const routes = {
     home: "/",
@@ -86,8 +88,22 @@ export const routing: {[k: string]: RoutingType} = {
     game: {
         path: "/game/:id",
         component: GamePage,
-        exact: false,
+        exact: true,
         header: true,
         protected: false,
+    },
+    gamePlay: {
+        path: "/game/:id/play",
+        component: GamePlay,
+        exact: true,
+        header: false,
+        protected: "private",
+    },
+    error500: {
+        path: "/500",
+        component: Error500,
+        protected: false,
+        header: false,
+        exact: true,
     },
 };

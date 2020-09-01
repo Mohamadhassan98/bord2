@@ -38,39 +38,89 @@ interface SliderProps {
     visibleSlides: number;
     onChange?: (index: number) => void;
     value?: number;
+    withSelection?: boolean;
 }
 
-export default function CustomSlider({children, visibleSlides, onChange, value}: SliderProps) {
+export default function CustomSlider({children, visibleSlides, onChange, value, withSelection}: SliderProps) {
     const [index, setIndex] = React.useState(0);
-    const controlled = value || index;
+    const [viewPortIndex, setViewPortIndex] = React.useState(0);
+    const controlledWithout = value || index;
+    const controlledWith = value || index + viewPortIndex;
+
+    const disablePrevWithSelection = controlledWithout === 0;
+    const disableNextWithSelection = controlledWithout + viewPortIndex === children.length - 1;
+    const disablePrevWithoutSelection = controlledWithout === 0 || children.length <= visibleSlides;
+    const disableNextWithoutSelection =
+        controlledWithout === children.length - visibleSlides || children.length <= visibleSlides;
+
+    const withoutSelectionOnNextClick = () => {
+        if (controlledWithout < children.length - visibleSlides) {
+            setIndex((prevState) => prevState + 1);
+        }
+    };
+
+    const withSelectionOnNextClick = () => {
+        if (viewPortIndex === visibleSlides - 1) {
+            setIndex((prevState) => prevState + 1);
+            return;
+        }
+        setViewPortIndex((prevState) => prevState + 1);
+    };
+
+    const withoutSelectionOnPrevClick = () => {
+        if (controlledWithout > 0) {
+            setIndex((prevState) => prevState - 1);
+        }
+    };
+
+    const withSelectionOnPrevClick = () => {
+        if (viewPortIndex === 0) {
+            setIndex((prevState) => prevState - 1);
+            return;
+        }
+        setViewPortIndex((prevState) => prevState - 1);
+    };
+
     React.useEffect(() => {
-        onChange?.(controlled);
-    }, [controlled, onChange]);
+        if (withSelection) {
+            onChange?.(controlledWith);
+        } else {
+            onChange?.(controlledWithout);
+        }
+    }, [controlledWith, controlledWithout, onChange, withSelection]);
+
+    React.useEffect(() => {
+        if (!value) {
+            return;
+        }
+        if (value < index + visibleSlides && value >= index) {
+            setViewPortIndex(value - index);
+        } else if (value < index) {
+            setViewPortIndex(0);
+            setIndex(value);
+        } else {
+            setViewPortIndex(visibleSlides - 1);
+            setIndex(value - visibleSlides + 1);
+        }
+    }, [index, value, visibleSlides]);
+
     return (
         <Carousel
             infinite={false}
             slidesPerPage={visibleSlides}
-            value={controlled}
+            value={index}
             onChange={(value) => setIndex(value)}
             rtl
             arrowLeft={
                 <RightButton
-                    onClick={() => {
-                        if (controlled > 0) {
-                            setIndex((prevState) => prevState - 1);
-                        }
-                    }}
-                    disabled={controlled === 0 || children.length <= visibleSlides}
+                    onClick={withSelection ? withSelectionOnPrevClick : withoutSelectionOnPrevClick}
+                    disabled={withSelection ? disablePrevWithSelection : disablePrevWithoutSelection}
                 />
             }
             arrowRight={
                 <LeftButton
-                    onClick={() => {
-                        if (controlled < children.length - visibleSlides) {
-                            setIndex((prevState) => prevState + 1);
-                        }
-                    }}
-                    disabled={controlled === children.length - visibleSlides || children.length <= visibleSlides}
+                    onClick={withSelection ? withSelectionOnNextClick : withoutSelectionOnNextClick}
+                    disabled={withSelection ? disableNextWithSelection : disableNextWithoutSelection}
                 />
             }
             dots={false}
@@ -78,3 +128,41 @@ export default function CustomSlider({children, visibleSlides, onChange, value}:
         />
     );
 }
+
+const CustomBaseSlider = ({children, onChange, value, visibleSlides}: SliderProps) => {
+    const [index, setIndex] = React.useState(0);
+    const controlled = value || index;
+
+    const disablePrevWithoutSelection = controlled === 0 || children.length <= visibleSlides;
+    const disableNextWithoutSelection =
+        controlled === children.length - visibleSlides || children.length <= visibleSlides;
+
+    const withoutSelectionOnNextClick = () => {
+        if (controlled < children.length - visibleSlides) {
+            setIndex((prevState) => prevState + 1);
+        }
+    };
+
+    const withoutSelectionOnPrevClick = () => {
+        if (controlled > 0) {
+            setIndex((prevState) => prevState - 1);
+        }
+    };
+
+    React.useEffect(() => {
+        onChange?.(controlled);
+    }, [controlled, onChange]);
+    return (
+        <Carousel
+            infinite={false}
+            slidesPerPage={visibleSlides}
+            value={index}
+            onChange={(value) => setIndex(value)}
+            rtl
+            arrowLeft={<RightButton onClick={withoutSelectionOnPrevClick} disabled={disablePrevWithoutSelection} />}
+            arrowRight={<LeftButton onClick={withoutSelectionOnNextClick} disabled={disableNextWithoutSelection} />}
+            dots={false}
+            slides={children}
+        />
+    );
+};

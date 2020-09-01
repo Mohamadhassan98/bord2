@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Grid, Typography} from "@material-ui/core";
+import {Container, Grid, Link, Typography} from "@material-ui/core";
 import theme from "../values/theme";
 import logo from "../assets/boardologo.png";
 import {appName} from "../values/strings";
@@ -56,7 +56,7 @@ export default function ({scrollRef}: {scrollRef: React.RefObject<HTMLDivElement
                 <Grid item container xs={2} direction='column' wrap='nowrap'>
                     <Grid item container wrap='nowrap' direction='row-reverse' justify='space-around'>
                         {/*  icons  */}
-                        <Grid item style={{...iconWrapper}}>
+                        <Grid item style={{...iconWrapper}} component={Link} href='https://www.aparat.com/boardo.ir'>
                             <img src={aparat} alt='aparat' style={{...iconSize}} />
                         </Grid>
                         <Grid item style={{...iconWrapper}}>
@@ -80,8 +80,13 @@ export default function ({scrollRef}: {scrollRef: React.RefObject<HTMLDivElement
                         </Typography>
                     </Grid>
                     <Grid item style={{marginTop: 5}}>
-                        <Typography color='textSecondary' style={{...contact}}>
-                            رایانامه: bordo@example.ir
+                        <Typography
+                            color='textSecondary'
+                            style={{...contact}}
+                            component={Link}
+                            href='mailto:boardo.ir@gmail.com'
+                        >
+                            رایانامه: boardo.ir@gmail.com
                         </Typography>
                     </Grid>
                     <Grid item style={{marginTop: 5}}>

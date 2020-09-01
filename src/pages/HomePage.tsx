@@ -98,7 +98,7 @@ export default function () {
                         <Grid item container wrap='nowrap' style={{width: "100%"}}>
                             {games.map(({description, id, logo, name}) => (
                                 <Grid item key={id} style={{marginLeft: 16, marginRight: 16}}>
-                                    <GameCard gameName={name} gameDesc={description} gameLogo={logo} />
+                                    <GameCard gameName={name} gameDesc={description} gameLogo={logo} id={id} />
                                 </Grid>
                             ))}
                         </Grid>

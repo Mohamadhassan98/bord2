@@ -3,7 +3,6 @@ const paths: {[key: string]: ((...a: any[]) => string) | string} = {
     login: "auth/login/",
     register: "auth/registration/",
     forgotPassword: "auth/password/reset/",
-    gameList: "game/games/",
     avatars: "auth/avatars/",
     recoverPassword: "auth/password/reset/confirm/",
     currentUser: "auth/user/",
@@ -11,6 +10,7 @@ const paths: {[key: string]: ((...a: any[]) => string) | string} = {
     logout: "auth/logout/",
     games: (search?: string) => `game/games${search ? `?search=${search}` : ""}`,
     game: (id: number) => `game/games/${id}`,
+    createServer: (slug: string) => `${slug}/create_server`,
 };
 
 export const getPath = (path: keyof typeof paths, ...args: any[]) => {

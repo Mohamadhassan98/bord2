@@ -28,3 +28,27 @@ export type game_summary = {
     logo: string;
     description: string;
 };
+
+export type comment = {
+    user_name: string;
+    user_avatar: string;
+    comment: string;
+    date: string;
+};
+
+export type game_full = {
+    id: number;
+    mean_vote: number | null;
+    images: {image: string}[];
+    comments: comment[];
+    name: string;
+    min_player: number;
+    max_player: number;
+    tutorial_video: string;
+    tutorial_doc: string;
+    logo: string;
+    slug: string;
+    description: string;
+    long_description: string;
+    is_active: boolean;
+};

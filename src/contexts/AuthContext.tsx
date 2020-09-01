@@ -48,6 +48,7 @@ export function AuthProvider({children}: {children: React.ReactElement}) {
     const login = ({user, token}: {user: User; token: string}) => {
         axios.defaults.headers["Authorization"] = `Token ${token}`;
         setUser(user);
+        setToken(token);
         const {email, username, avatar_detail: avatar} = user;
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
@@ -70,6 +71,7 @@ export function AuthProvider({children}: {children: React.ReactElement}) {
                 localStorage.clear();
             })
             .catch((error) => console.error(error));
+        axios.defaults.headers.Authorization = undefined;
     };
     return (
         <AuthContext.Provider value={{isLoggedIn, login, logout, token, user, updateUser}}>

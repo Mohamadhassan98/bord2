@@ -3,7 +3,8 @@ import moment from "moment-jalaali";
 moment.loadPersian({dialect: "persian-modern"});
 moment.locale("fa");
 export const getFullDate = (gregorian: Date) => moment(gregorian).format("YYYY/MM/DD");
-export const appName = "بردو";
+export const appName = "بوردو";
+export const motto = "فعلاً هیچی";
 
 export const pages = {
     home: {
@@ -78,6 +79,10 @@ export const pages = {
         downloadRulebook: "مطالعه قوانین",
         minimumPlayers: "حداقل بازیکن",
         maximumPlayers: "حداکثر بازیکن",
+        playIt: "بازی کن!",
+        soon: "به زودی",
+        createRoom: "ایجاد اتاق",
+        joinRoom: "پیوستن به اتاق",
     },
 };
 
@@ -98,5 +103,26 @@ export const components = {
     },
     searchBar: {
         placeHolder: "بازی مورد نظر خود را جستجو کنید.",
+    },
+    startGameDialog: {
+        title: "شروع بازی",
+        login: "وارد شوید.",
+        loginFirst: "برای شروع بازی ابتدا وارد شوید.",
+        join: {
+            title: "ورود به اتاق بازی",
+            content: "اطلاعات اتاق بازی را که از دوست خود دریافت کرده اید وارد کنید.",
+        },
+        create: {
+            title: "اتاق بازی شما آماده است.",
+            content: "برای پیوستن سایر دوستان خود به این بازی اطلاعات زیر را با آنها به اشتراک بگذارید.",
+        },
+        link: "لینک",
+        password: "رمز عبور",
+        startGame: "ورود به بازی",
+        share: "اشتراک",
+        alert: "توجه",
+        sharedWithFriends: "لینک بازی را با دوستان خود به اشتراک گذاشته اید؟",
+        letsGo: "بله. بزن بریم...",
+        letMeSee: "نه. فراموش کردم...",
     },
 };

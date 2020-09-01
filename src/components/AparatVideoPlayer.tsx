@@ -11,7 +11,7 @@ export default function ({src, srcType, title}: {src: string; srcType: "hash" | 
             source = `https://www.aparat.com/video/video/embed/videohash/${src}/vt/frame?&recom=none`;
             break;
         case "url": {
-            const hash = src.split("/").pop();
+            const hash = (src || "").split("/").pop();
             source = `https://www.aparat.com/video/video/embed/videohash/${hash}/vt/frame?&recom=none`;
             break;
         }
